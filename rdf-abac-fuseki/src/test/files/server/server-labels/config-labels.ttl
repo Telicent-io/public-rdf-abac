@@ -1,0 +1,38 @@
+## FMod_ABAC testing.
+
+PREFIX :        <#>
+PREFIX fuseki:  <http://jena.apache.org/fuseki#>
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
+PREFIX tdb2:    <http://jena.apache.org/2016/tdb#>
+
+PREFIX authz:   <http://telicent.io/security#>
+
+:service1 rdf:type fuseki:Service ;
+    fuseki:name "ds" ;
+    fuseki:endpoint [ fuseki:operation fuseki:query ; ] ;
+    ## Careful - assumes no GSP-rw.
+    fuseki:endpoint [ fuseki:operation authz:upload ; ] ;
+    fuseki:dataset :dataset ;
+    .
+
+## Plain, no authz.
+:service2 rdf:type fuseki:Service ;
+    fuseki:name "base" ;
+    fuseki:endpoint [ fuseki:operation fuseki:query ; ] ;
+    fuseki:endpoint [ fuseki:operation fuseki:update ; ] ;
+    fuseki:dataset :datasetBase ;
+    .
+
+:dataset rdf:type authz:DatasetAuthz ;
+    authz:labels <file:labels-1.ttl> ;
+    authz:tripleDefaultAttributes "default" ;
+    authz:attributes <file:attribute-store.ttl> ;
+    authz:dataset :datasetBase;
+    .
+
+# Transactional in-memory dataset.
+:datasetBase rdf:type ja:MemoryDataset ;
+    ja:data <file:data-1.ttl>
+    .

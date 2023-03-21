@@ -1,0 +1,38 @@
+
+PREFIX : <http://example/>
+
+:s :p1 123 .
+:s :p1 456 .
+:s :p2 789 .
+
+
+PREFIX authz: <http://telicent.io/security#>
+
+# Deny specific, allow with wildcard
+GRAPH authz:labels {
+    [] <test:datasetDefaultLabel> "*" .
+    [ authz:pattern ':s :p1 ANY' ;  authz:label "status=level3" ] .
+    [ authz:pattern ':s :p1 123' ;  authz:label "status=level1" ] .
+}
+
+GRAPH <test:result> {
+    :s :p1 456 .
+    :s :p2 789 .
+}
+
+GRAPH <test:attributes> {
+    [] authz:user "u1" ;
+       authz:userAttribute "allowed-u1";
+       authz:userAttribute "status=level2"
+    .
+    [] authz:user "u2" ;
+       authz:userAttribute "allowed-u2";
+       authz:userAttribute "status=level1"
+    .
+    
+    [] authz:hierarchy [
+           authz:attribute "status" ;
+           authz:attributeValues "level4, level3, level2, level1" ;
+       ] ;
+    .
+}

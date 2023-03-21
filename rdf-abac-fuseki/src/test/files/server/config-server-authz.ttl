@@ -1,0 +1,44 @@
+## Configuration using authz: forms.
+
+PREFIX :        <#>
+PREFIX fuseki:  <http://jena.apache.org/fuseki#>
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
+PREFIX tdb2:    <http://jena.apache.org/2016/tdb#>
+
+PREFIX authz:   <http://telicent.io/security#>
+
+:service1 rdf:type fuseki:Service ;
+    fuseki:name "ds" ;
+    ## Not supported. Mixing custom operations with multi-dispatch on a single endpoint.
+##     fuseki:endpoint [ fuseki:operation authz:query ] ;
+##     fuseki:endpoint [ fuseki:operation authz:gsp-r ] ;
+    
+    fuseki:endpoint [ fuseki:operation authz:query ; fuseki:name "query" ] ;
+    fuseki:endpoint [ fuseki:operation authz:gsp-r ; fuseki:name "gsp-r" ] ;
+    
+    fuseki:endpoint [ fuseki:operation authz:upload ; fuseki:name "upload" ] ;
+
+    fuseki:endpoint [ fuseki:operation authz:labels ; fuseki:name "labels" ] ;
+
+    fuseki:dataset :dataset ;
+    .
+
+## ABAC Dataset:
+:dataset rdf:type authz:DatasetAuthz ;
+    authz:attributes <file:attribute-store.ttl> ;
+    authz:dataset :datasetBase;
+    .
+
+# Transactional in-memory dataset.
+:datasetBase rdf:type ja:MemoryDataset .
+
+## ------------
+## No authorization. Should not interfere.
+:service2 rdf:type fuseki:Service ;
+    fuseki:name "base" ;
+    fuseki:endpoint [ fuseki:operation fuseki:query ; ] ;
+    fuseki:endpoint  [ fuseki:operation fuseki:upload ; fuseki:name "upload" ] ;
+    fuseki:dataset [ rdf:type ja:MemoryDataset ];
+    .

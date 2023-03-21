@@ -1,0 +1,23 @@
+PREFIX foo: <http://example/>
+
+foo:s foo:p1 123 .
+
+PREFIX authz: <http://telicent.io/security#>
+
+GRAPH authz:labels {
+    [ authz:pattern 'bar:s bar:p1 123' ;  authz:label "allowed-u1" ] .
+}
+
+GRAPH <test:result> {
+}
+
+GRAPH <test:attributes> {
+    [] authz:user "u1" ;
+       authz:userAttribute "allowed-u1";
+       authz:userAttribute "all"
+    .
+    [] authz:user "u2" ;
+       authz:userAttribute "allowed-u2";
+       authz:userAttribute "all"
+    .
+}

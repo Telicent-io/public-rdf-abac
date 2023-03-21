@@ -1,0 +1,17 @@
+## ABAC Dataset assembler.
+
+PREFIX :        <#>
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
+
+PREFIX authz:   <http://telicent.io/security#>
+
+[] rdf:type authz:DatasetAuthz ;
+    authz:labels <file:labels-1.ttl> ;
+    authz:dataset :basedata ;
+    authz:attributes <file:attribute-store.ttl> ;
+    .
+
+:attributeStore rdf:type ja:MemoryDataset .
+:basedata rdf:type ja:MemoryDataset .

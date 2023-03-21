@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (c) Telicent Ltd.
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+        http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>rdf-abac-fmod</artifactId>
+  <packaging>jar</packaging>
+  <name>Telicent ABAC - Fuseki Module</name>
+
+  <parent>
+    <groupId>io.telicent.jena</groupId>
+    <artifactId>rdf-abac</artifactId>
+    <version>1</version>
+    <relativePath>..</relativePath>
+  </parent>
+
+  <!--
+       Problems with javadoc plugin (3.4.0)
+  <properties>
+    <automatic.module.name>io.telicent.jena.rdfabac.fmod</automatic.module.name>
+  </properties>
+  -->
+
+  <dependencies>
+
+    <dependency>
+      <groupId>io.telicent.jena</groupId>
+      <artifactId>rdf-abac-fuseki</artifactId>
+      <version>${project.version}</version>
+      
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.jena</groupId>
+          <artifactId>jena-fuseki-main</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.jena</groupId>
+          <artifactId>apache-jena-libs</artifactId>
+        </exclusion>
+      </exclusions>
+
+    </dependency>
+      
+  </dependencies>
+
+    <build>
+    <plugins>
+      <!-- Shade to get a self-contained jar that does not contain Fuseki.-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version>
+        <configuration>
+          <shadedArtifactAttached>false</shadedArtifactAttached>
+
+          <transformers>  
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+              <manifestEntries>
+                <Multi-Release>true</Multi-Release>
+              </manifestEntries>
+            </transformer>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
+              <addHeader>false</addHeader>
+            </transformer>
+          </transformers>
+
+          <filters>
+            <filter>
+              <artifact>*:*</artifact>
+              <excludes>
+                <exclude>META-INF/LICENSE.md</exclude>
+                <exclude>META-INF/NOTICE.md</exclude>
+                <exclude>META-INF/DEPENDENCIES</exclude>
+                <exclude>META-INF/MANIFEST.MF</exclude>
+                <!-- Some jars are signed but shading breaks that.
+                     Don't include signing files.
+                -->
+                <exclude>META-INF/*.SF</exclude>
+                <exclude>META-INF/*.DSA</exclude>
+                <exclude>META-INF/*.RSA</exclude>
+              </excludes>
+            </filter>
+          </filters>
+        </configuration>
+        <executions>
+          <execution>
+            <id>run</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+
+</project>

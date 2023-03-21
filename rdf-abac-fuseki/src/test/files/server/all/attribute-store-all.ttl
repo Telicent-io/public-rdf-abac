@@ -1,0 +1,22 @@
+PREFIX authz: <http://telicent.io/security#>
+
+[] authz:user "u1" ;
+    authz:userAttribute "manager";
+    authz:userAttribute "status=sensitive";
+    .
+    
+[] authz:user "u2" ;
+    authz:userAttribute "engineer";
+    authz:userAttribute "status=public";
+    .
+
+[] authz:user "u3" ;
+    authz:userAttribute "nothing";
+    ## No status attribute
+    .
+
+[] authz:hierarchy [
+        authz:attribute "status" ;
+        authz:attributeValues "public, confidential, sensitive, private"
+    ] .
+    

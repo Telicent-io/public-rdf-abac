@@ -1,0 +1,31 @@
+PREFIX : <http://example/>
+
+:s1 :p 12 .
+:s1 :q 34 .
+:s2 :p 56 .
+:s2 :q 78 .
+
+
+PREFIX authz: <http://telicent.io/security#>
+
+# Deny specific, allow with wildcard
+GRAPH authz:labels {
+    [ authz:pattern 'ANY :p ANY' ;  authz:label "deny-u1" ] .
+    [ authz:pattern 'ANY :q ANY' ;  authz:label "allowed-u1" ] .
+}
+
+GRAPH <test:result> {
+      :s1 :q 34 .
+      :s2 :q 78 .
+}
+
+GRAPH <test:attributes> {
+    [] authz:user "u1" ;
+       authz:userAttribute "allowed-u1";
+       authz:userAttribute "all"
+    .
+    [] authz:user "u2" ;
+       authz:userAttribute "allowed-u2";
+       authz:userAttribute "all"
+    .
+}

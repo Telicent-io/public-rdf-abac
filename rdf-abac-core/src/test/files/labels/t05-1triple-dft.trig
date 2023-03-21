@@ -1,0 +1,27 @@
+PREFIX : <http://example/>
+
+:s :p1 123 .
+
+PREFIX authz: <http://telicent.io/security#>
+
+
+# No mention of data triple. Default for labels.
+GRAPH authz:labels {
+    [] <test:datasetDefaultLabel> "*" .
+    [ authz:pattern ':x :y :z' ;  authz:label "other" ] .
+}
+
+GRAPH <test:result> {
+    :s :p1 123 .
+}
+
+GRAPH <test:attributes> {
+    [] authz:user "u1" ;
+       authz:userAttribute "allowed-u1";
+       authz:userAttribute "all"
+    .
+    [] authz:user "u2" ;
+       authz:userAttribute "allowed-u2";
+       authz:userAttribute "all"
+    .
+}

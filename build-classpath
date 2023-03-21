@@ -1,0 +1,9 @@
+#!/usr/bin/bash
+
+F=X
+F=abac-classpath
+
+mvn dependency:build-classpath -DincludeScope=compile -Dmdep.outputFile="$F"
+echo
+echo "In file $F"
+echo

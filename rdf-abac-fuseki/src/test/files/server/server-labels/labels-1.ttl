@@ -1,0 +1,6 @@
+PREFIX authz: <http://telicent.io/security#>
+
+PREFIX : <http://example/>
+
+[ authz:pattern ':s :p1 123' ;  authz:label "allowed-u1" ] .
+[ authz:pattern ':s :p1 456' ;  authz:label "deny" ] .

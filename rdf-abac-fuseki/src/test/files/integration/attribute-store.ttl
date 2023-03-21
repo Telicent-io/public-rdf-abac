@@ -1,0 +1,26 @@
+## Attribute anbd hierarchy data for integration testing.
+## This is read into the testing mock attributes store.
+
+PREFIX authz: <http://telicent.io/security#>
+
+[] authz:user "u1@email" ;
+   authz:userAttribute "engineer" , "employee" ;
+   .
+
+[] authz:user "u2@email" ;
+   authz:userAttribute "engineer" , "contractor" ;
+   .
+
+[] authz:user "public" .
+
+[] authz:user "user1@email" ;
+   ## authz:userAttribute "e2e"; ## Not a hierarchy
+  authz:userAttribute "clearance=secret";
+
+##    authz:userAttribute "'email:user1@email'";
+##    authz:userAttribute "email = 'user1@email'";
+   .
+
+[] authz:hierarchy [ authz:attribute "clearance" ;
+                     authz:attributeValues "ordinary, secret, top-secret" ];
+   .
