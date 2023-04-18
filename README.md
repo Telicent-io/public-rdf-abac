@@ -1,18 +1,16 @@
 # ABAC - Attribute-Based Access Control
 
+Documentation: [docs/abac](./docs/abac.md)
+
 ABAC provides access control on data. Each data item has an associated attribute
 expression and a data item is only visible to the application if the attribute
 expression evaluates to "true".  The attributes are evaluated in the context of a data access
 request (query); the user has a number of attributes which represent the
-permissions 
+permissions.
 
-The associated attribute expression maybe a default for the dataset.
-
-For example: the data label `"engineer"` might mean that the user making the data access
-request (query) and if the user has the attributes `"engineer"` and `"employee"`
-that are allowed to access the data item.
-
-Documentation: [docs/abac](./docs/abac.md)
+For example: a user making a query request has key-value attributes `"role=engineer"` and
+`"status=employee"`. Data visible to the query request includes triples labelled
+`"role=engineer"` or `"status=employee"`.
 
 ## Build
 
@@ -21,7 +19,7 @@ Run
    mvn clean install
 ```
 
-which creates the `rdf-abac-fmod` modulke for Fuseki.
+which creates the `rdf-abac-fmod` module for Fuseki.
 
 ## Running Fuseki
 

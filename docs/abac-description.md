@@ -53,13 +53,13 @@ Data can be labelled in two ways. An update message may have a common labelling 
 
 ## By Header
 
-The header `Security-Label` is used to give teh label that is to apply to all of a request.
+The header `Security-Label` is used to give the label that is to apply to all of a request.
 
-'''
+```
     Security-Label: "employee || classification=sensitive"
-'''
+```
 
-This can be used in HTTP or Kafha messages.
+This can be used in HTTP or Kafka messages.
 
 ## By RDF
 
